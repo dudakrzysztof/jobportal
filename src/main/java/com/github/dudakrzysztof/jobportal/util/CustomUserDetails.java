@@ -12,10 +12,10 @@ import java.util.List;
 
 public class CustomUserDetails implements UserDetails {
 
-    private final Users user;
+    private Users user;
 
-    public CustomUserDetails(Users users) {
-        this.user = users;
+    public CustomUserDetails(Users user) {
+        this.user = user;
     }
 
     @Override
@@ -23,7 +23,6 @@ public class CustomUserDetails implements UserDetails {
         UsersType usersType = user.getUserTypeId();
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(usersType.getUserTypeName()));
-
         return authorities;
     }
 

@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
+
     private static final String UPLOAD_DIR = "photos";
 
     @Override

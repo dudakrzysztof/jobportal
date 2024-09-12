@@ -28,33 +28,32 @@ public class RecruiterProfileController {
     private final UsersRepository usersRepository;
     private final RecruiterProfileService recruiterProfileService;
 
-    public RecruiterProfileController(UsersRepository usersRepository,
-                                      RecruiterProfileService recruiterProfileService) {
+    public RecruiterProfileController(UsersRepository usersRepository, RecruiterProfileService recruiterProfileService) {
         this.usersRepository = usersRepository;
         this.recruiterProfileService = recruiterProfileService;
     }
 
     @GetMapping("/")
     public String recruiterProfile(Model model) {
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (!(authentication instanceof AnonymousAuthenticationToken)){
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
             String currentUsername = authentication.getName();
-            Users user = usersRepository.findByEmail(currentUsername).orElseThrow(()-> new UsernameNotFoundException(
-                    "Could not found user"
-            ));
-            Optional<RecruiterProfile> recruiterProfile = recruiterProfileService.getOne(user.getUserId());
+            Users users = usersRepository.findByEmail(currentUsername).orElseThrow(() -> new UsernameNotFoundException("Could not " + "found user"));
+            Optional<RecruiterProfile> recruiterProfile = recruiterProfileService.getOne(users.getUserId());
 
-            if (recruiterProfile.isPresent()){
-                model.addAttribute("profile", recruiterProfile);
-            }
+            if (!recruiterProfile.isEmpty())
+                model.addAttribute("profile", recruiterProfile.get());
+
         }
+
         return "recruiter_profile";
     }
 
     @PostMapping("/addNew")
-    public String addNew(RecruiterProfile recruiterProfile, @RequestParam("image")MultipartFile multipartFile,
-                         Model model) {
+    public String addNew(RecruiterProfile recruiterProfile, @RequestParam("image") MultipartFile multipartFile, Model model) {
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             String currentUsername = authentication.getName();
@@ -80,3 +79,11 @@ public class RecruiterProfileController {
         return "redirect:/dashboard/";
     }
 }
+
+
+
+
+
+
+
+
