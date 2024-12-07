@@ -1,0 +1,28 @@
+package com.github.dudakrzysztof.jobportal.services;
+
+import com.github.dudakrzysztof.jobportal.entity.JobPostActivity;
+import com.github.dudakrzysztof.jobportal.entity.JobSeekerApply;
+import com.github.dudakrzysztof.jobportal.entity.JobSeekerProfile;
+import com.github.dudakrzysztof.jobportal.repository.JobSeekerApplyRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class JobSeekerApplyService {
+    private final JobSeekerApplyRepository jobSeekerApplyRepository;
+
+    @Autowired
+    public JobSeekerApplyService(JobSeekerApplyRepository jobSeekerApplyRepository) {
+        this.jobSeekerApplyRepository = jobSeekerApplyRepository;
+    }
+
+    public List<JobSeekerApply> getCandidatesJobs(JobSeekerProfile userAccountId) {
+        return jobSeekerApplyRepository.findByUserId(userAccountId);
+    }
+
+    public List<JobSeekerApply> getJobCandidates(JobPostActivity job) {
+        return jobSeekerApplyRepository.findByJob(job);
+    }
+}
